@@ -1,0 +1,57 @@
+{
+    "name": "hastinbe/cached-eloquent-globals",
+    "description": "A Statamic addon that provides caching for Eloquent-based global variables to improve performance",
+    "type": "statamic-addon",
+    "authors": [
+        {
+            "name": "Beau Hastings",
+            "email": "beau@saweet.net",
+            "homepage": "https://saweet.net",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/hastinbe/cached-eloquent-globals/issues",
+        "source": "https://github.com/hastinbe/cached-eloquent-globals"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hastinbe\\CachedEloquentGlobals\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Hastinbe\\CachedEloquentGlobals\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "statamic/cms": "^5.0",
+        "statamic/eloquent-driver": "^4.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0",
+        "mockery/mockery": "^1.6"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "extra": {
+        "statamic": {
+            "name": "Cached Eloquent Globals",
+            "description": "Performance optimization for Eloquent-based global variables with automatic cache invalidation"
+        },
+        "laravel": {
+            "providers": [
+                "Hastinbe\\CachedEloquentGlobals\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": false
+        }
+    }
+}

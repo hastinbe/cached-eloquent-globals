@@ -44,8 +44,8 @@ php artisan vendor:publish --tag=cached-eloquent-config
 CACHED_GLOBALS_DURATION=86400
 CACHED_GLOBALS_EXCLUDE=handle1,handle2
 
-# Entry Caching
-CACHED_ENTRIES_ENABLED=true
+# Entry Caching (enabled by default)
+CACHED_ENTRIES_ENABLED=true  # Set to false to disable
 CACHED_ENTRIES_DURATION=300
 CACHED_ENTRIES_EXCLUDE=news,live_updates,events
 ```
@@ -61,7 +61,7 @@ return [
     ],
     
     'entries' => [
-        'enabled' => true,
+        'enabled' => true,  // Enabled by default
         'cache_duration' => 300, // 5 minutes
         'exclude_collections' => ['news', 'events'],
         'tagged_only' => false,

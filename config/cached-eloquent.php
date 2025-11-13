@@ -43,10 +43,10 @@ return [
 
     'entries' => [
         /*
-        | Enable or disable entry caching. By default, caching is disabled.
-        | Set to true to enable caching in all environments.
+        | Enable or disable entry caching. By default, caching is enabled.
+        | Set to false to disable caching if needed.
         */
-        'enabled' => env('CACHED_ENTRIES_ENABLED', false),
+        'enabled' => env('CACHED_ENTRIES_ENABLED', true),
 
         /*
         | Cache duration in seconds for entry queries. Default is 5 minutes.

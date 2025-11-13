@@ -39,7 +39,7 @@ class CachedEntryRepository extends BaseRepository
      */
     protected function shouldCache(?string $collection = null): bool
     {
-        if (!config('cached-eloquent.entries.enabled')) {
+        if (!config('cached-eloquent.entries.enabled', true)) {
             return false;
         }
 

@@ -42,14 +42,10 @@ class ServiceProvider extends AddonServiceProvider
      */
     public function bootAddon(): void
     {
-        // Publish config files
+        // Publish merged config file
         $this->publishes([
-            __DIR__.'/../config/cached-eloquent-globals.php' => config_path('cached-eloquent-globals.php'),
-        ], 'cached-eloquent-globals-config');
-
-        $this->publishes([
-            __DIR__.'/../config/cached-eloquent-entries.php' => config_path('cached-eloquent-entries.php'),
-        ], 'cached-eloquent-entries-config');
+            __DIR__.'/../config/cached-eloquent.php' => config_path('cached-eloquent.php'),
+        ], 'cached-eloquent-config');
 
         $this->registerEventListeners();
     }

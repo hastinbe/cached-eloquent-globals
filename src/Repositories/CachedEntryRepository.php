@@ -31,7 +31,7 @@ class CachedEntryRepository extends BaseRepository
      */
     protected function getCacheDuration(): int
     {
-        return config('cached-eloquent-entries.cache_duration') ?? self::CACHE_DURATION;
+        return config('cached-eloquent.entries.cache_duration') ?? self::CACHE_DURATION;
     }
 
     /**
@@ -39,7 +39,7 @@ class CachedEntryRepository extends BaseRepository
      */
     protected function shouldCache(?string $collection = null): bool
     {
-        if (!config('cached-eloquent-entries.enabled')) {
+        if (!config('cached-eloquent.entries.enabled')) {
             return false;
         }
 
@@ -56,7 +56,7 @@ class CachedEntryRepository extends BaseRepository
      */
     protected function isCollectionExcluded(string $collection): bool
     {
-        $excluded = config('cached-eloquent-entries.exclude_collections', []);
+        $excluded = config('cached-eloquent.entries.exclude_collections', []);
         return in_array($collection, $excluded, true);
     }
 

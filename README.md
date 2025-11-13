@@ -31,54 +31,41 @@ composer require hastinbe/cached-eloquent-globals
 
 ## Configuration
 
-Publish the config files (optional):
+Publish the config file (optional):
 
 ```bash
-# Global variables config
-php artisan vendor:publish --tag=cached-eloquent-globals-config
-
-# Entry caching config
-php artisan vendor:publish --tag=cached-eloquent-entries-config
+php artisan vendor:publish --tag=cached-eloquent-config
 ```
 
-### Global Variables Configuration
+### Environment Variables
 
 ```env
-# Cache duration in seconds (default: 86400 = 24 hours)
+# Global Variables
 CACHED_GLOBALS_DURATION=86400
-
-# Comma-separated list of handles to exclude from caching
 CACHED_GLOBALS_EXCLUDE=handle1,handle2
-```
 
-```php
-// config/cached-eloquent-globals.php
-return [
-    'cache_duration' => 86400, // 24 hours
-    'exclude_handles' => ['some_handle'],
-];
-```
-
-### Entry Caching Configuration
-
-```env
-# Enable entry caching (default: production only)
+# Entry Caching
 CACHED_ENTRIES_ENABLED=true
-
-# Cache duration in seconds (default: 300 = 5 minutes)
 CACHED_ENTRIES_DURATION=300
-
-# Comma-separated list of collections to exclude
 CACHED_ENTRIES_EXCLUDE=news,live_updates,events
 ```
 
+### Configuration File
+
 ```php
-// config/cached-eloquent-entries.php
+// config/cached-eloquent.php
 return [
-    'enabled' => true,
-    'cache_duration' => 300, // 5 minutes
-    'exclude_collections' => ['news', 'events'],
-    'tagged_only' => false, // Only cache when tags are supported
+    'globals' => [
+        'cache_duration' => 86400, // 24 hours
+        'exclude_handles' => ['some_handle'],
+    ],
+    
+    'entries' => [
+        'enabled' => true,
+        'cache_duration' => 300, // 5 minutes
+        'exclude_collections' => ['news', 'events'],
+        'tagged_only' => false,
+    ],
 ];
 ```
 

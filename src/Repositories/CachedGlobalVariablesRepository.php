@@ -21,13 +21,13 @@ class CachedGlobalVariablesRepository extends GlobalVariablesRepository
 
     /**
      * Get list of handles that should be excluded from caching
-     * Can be configured in config/cached-eloquent-globals.php
+     * Can be configured in config/cached-eloquent.php
      *
      * @return array
      */
     protected function getExcludedHandles(): array
     {
-        return config('cached-eloquent-globals.exclude_handles') ?? [];
+        return config('cached-eloquent.globals.exclude_handles') ?? [];
     }
 
     /**
@@ -37,7 +37,7 @@ class CachedGlobalVariablesRepository extends GlobalVariablesRepository
      */
     protected function getCacheDuration(): int
     {
-        return config('cached-eloquent-globals.cache_duration') ?? self::CACHE_DURATION;
+        return config('cached-eloquent.globals.cache_duration') ?? self::CACHE_DURATION;
     }
 
     /**

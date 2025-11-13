@@ -21,6 +21,12 @@ class ServiceProvider extends AddonServiceProvider
      */
     public function register(): void
     {
+        // Merge default config so it's available immediately
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/cached-eloquent.php',
+            'cached-eloquent'
+        );
+
         $this->app->booted(function () {
             // Don't use Statamic::repository() it conflicts with self::bindings() of the inherited class
             Facade::clearResolvedInstance(GlobalVariablesRepositoryContract::class);

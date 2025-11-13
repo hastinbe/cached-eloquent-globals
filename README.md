@@ -40,7 +40,8 @@ php artisan vendor:publish --tag=cached-eloquent-config
 ### Environment Variables
 
 ```env
-# Global Variables
+# Global Variables (enabled by default)
+CACHED_GLOBALS_ENABLED=true  # Set to false to disable
 CACHED_GLOBALS_DURATION=86400
 CACHED_GLOBALS_EXCLUDE=handle1,handle2
 
@@ -56,6 +57,7 @@ CACHED_ENTRIES_EXCLUDE=news,live_updates,events
 // config/cached-eloquent.php
 return [
     'globals' => [
+        'enabled' => true,  // Enabled by default
         'cache_duration' => 86400, // 24 hours
         'exclude_handles' => ['some_handle'],
     ],

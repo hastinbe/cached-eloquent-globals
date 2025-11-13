@@ -14,6 +14,12 @@ return [
 
     'globals' => [
         /*
+        | Enable or disable global variables caching. By default, caching is enabled.
+        | Set to false to disable caching if needed.
+        */
+        'enabled' => env('CACHED_GLOBALS_ENABLED', true),
+
+        /*
         | Cache duration in seconds for global variables. Default is 24 hours.
         | Set to null to use Laravel's default cache TTL.
         */

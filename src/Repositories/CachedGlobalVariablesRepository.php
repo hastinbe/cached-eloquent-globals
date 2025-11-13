@@ -41,6 +41,16 @@ class CachedGlobalVariablesRepository extends GlobalVariablesRepository
     }
 
     /**
+     * Check if caching is enabled globally
+     *
+     * @return bool
+     */
+    protected function isCachingEnabled(): bool
+    {
+        return config('cached-eloquent.globals.enabled', true);
+    }
+
+    /**
      * Check if a handle should be cached
      *
      * @param string $handle
@@ -48,6 +58,10 @@ class CachedGlobalVariablesRepository extends GlobalVariablesRepository
      */
     protected function shouldCache(string $handle): bool
     {
+        if (!$this->isCachingEnabled()) {
+            return false;
+        }
+
         $excluded = $this->getExcludedHandles();
         return !in_array($handle, $excluded, true);
     }

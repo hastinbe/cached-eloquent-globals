@@ -4,8 +4,10 @@ namespace Hastinbe\CachedEloquentGlobals;
 
 use Hastinbe\CachedEloquentGlobals\Repositories\CachedGlobalVariablesRepository;
 use Hastinbe\CachedEloquentGlobals\Repositories\CachedEntryRepository;
+use Hastinbe\CachedEloquentGlobals\Repositories\CachedFieldsetRepository;
 use Statamic\Contracts\Globals\GlobalVariablesRepository as GlobalVariablesRepositoryContract;
 use Statamic\Contracts\Entries\EntryRepository as EntryRepositoryContract;
+use Statamic\Fields\FieldsetRepository as FieldsetRepositoryContract;
 use Statamic\Events\GlobalSetSaved;
 use Statamic\Events\GlobalVariablesSaved;
 use Statamic\Events\EntrySaved;
@@ -39,6 +41,12 @@ class ServiceProvider extends AddonServiceProvider
             $this->app->singleton(
                 EntryRepositoryContract::class,
                 CachedEntryRepository::class
+            );
+
+            Facade::clearResolvedInstance(FieldsetRepositoryContract::class);
+            $this->app->singleton(
+                FieldsetRepositoryContract::class,
+                CachedFieldsetRepository::class
             );
         });
     }
@@ -141,6 +149,35 @@ class ServiceProvider extends AddonServiceProvider
         if (method_exists($repository, 'clearUriCache')) {
             /** @var CachedEntryRepository $repository */
             $repository->clearUriCache();
+        }
+    }
+
+    /**
+     * Clear all fieldset caches (manual helper)
+     *
+     * @return void
+     */
+    public function clearAllFieldsetCache(): void
+    {
+        $repository = app(FieldsetRepositoryContract::class);
+        if (method_exists($repository, 'clearAllCache')) {
+            /** @var CachedFieldsetRepository $repository */
+            $repository->clearAllCache();
+        }
+    }
+
+    /**
+     * Clear cache for a specific fieldset (manual helper)
+     *
+     * @param string $handle
+     * @return void
+     */
+    public function clearFieldsetCache(string $handle): void
+    {
+        $repository = app(FieldsetRepositoryContract::class);
+        if (method_exists($repository, 'clearCache')) {
+            /** @var CachedFieldsetRepository $repository */
+            $repository->clearCache($handle);
         }
     }
 }

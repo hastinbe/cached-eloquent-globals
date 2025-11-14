@@ -1,6 +1,6 @@
 # Cached Eloquent Repositories
 
-A Statamic addon that provides automatic caching for Eloquent-based global variables and entries to improve performance.
+A Statamic addon that provides automatic caching for Eloquent-based repositories (globals, entries, fieldsets) to dramatically improve performance.
 
 ## Features
 
@@ -15,11 +15,19 @@ A Statamic addon that provides automatic caching for Eloquent-based global varia
 - **Automatic Fallback**: Works with any cache driver, optimized for Redis
 - **Collection-Level Control**: Exclude frequently-updated collections
 - **Automatic Invalidation**: Cache cleared on save/delete
+- **URI Caching**: Fast lookups for entry routing
+
+### Fieldset Caching
+- **Long-term Caching**: 24-hour cache (configurable)
+- **Automatic Invalidation**: Cache cleared when fieldsets are saved/deleted
+- **CP Performance**: Dramatically speeds up Control Panel operations
+- **Two-Layer Cache**: Combines Blink (request-level) + persistent cache
 
 ### General
 - **Zero Configuration**: Works out of the box with sensible defaults
 - **Event-Driven**: Listens to Statamic events for automatic cache clearing
 - **PostgreSQL Optimized**: Designed for high-performance PostgreSQL setups
+- **Tag Support Detection**: Automatically uses Redis/Memcached tags when available
 
 > **⚠️ Important**: This addon depends on the `statamic/eloquent-driver` package. It only works when your repositories are set to use Eloquent drivers in the `config/statamic/eloquent-driver.php` configuration file.
 
@@ -49,6 +57,10 @@ CACHED_GLOBALS_EXCLUDE=handle1,handle2
 CACHED_ENTRIES_ENABLED=true  # Set to false to disable
 CACHED_ENTRIES_DURATION=300
 CACHED_ENTRIES_EXCLUDE=news,live_updates,events
+
+# Fieldset Caching (enabled by default)
+CACHED_FIELDSETS_ENABLED=true  # Set to false to disable
+CACHED_FIELDSETS_DURATION=86400
 ```
 
 ### Configuration File
@@ -61,17 +73,32 @@ return [
         'cache_duration' => 86400, // 24 hours
         'exclude_handles' => ['some_handle'],
     ],
-    
+
     'entries' => [
         'enabled' => true,  // Enabled by default
         'cache_duration' => 300, // 5 minutes
         'exclude_collections' => ['news', 'events'],
         'tagged_only' => false,
     ],
+
+    'fieldsets' => [
+        'enabled' => true,  // Enabled by default
+        'cache_duration' => 86400, // 24 hours
+    ],
 ];
 ```
 
 ## How It Works
+
+### Fieldsets
+1. **Caching**: Fieldset definitions are cached with a 24-hour TTL by default
+2. **Invalidation**: Automatically cleared when fieldsets are saved or deleted
+3. **Tagged Caching**: Uses Redis/Memcached tags when available for efficient invalidation
+4. **Blink + Persistent**: Combines Statamic's request-level Blink cache with persistent cache layer
+
+**Cached Methods:**
+- `all()` - All fieldsets (used extensively throughout the Control Panel)
+- `find($handle)` - Individual fieldset lookup by handle
 
 ### Global Variables
 1. **Caching**: Results are cached with a 24-hour TTL by default
@@ -152,6 +179,34 @@ The test suite includes:
 - Redis tag detection tests
 
 See `tests/README.md` for more details.
+
+## Manual Cache Clearing
+
+### Via Tinker
+
+```php
+// Clear specific caches
+app(\Statamic\Fields\FieldsetRepository::class)->clearCache('article');
+app(\Statamic\Fields\FieldsetRepository::class)->clearAllCache();
+
+// Clear all entry & URI caches
+app(\Statamic\Contracts\Entries\EntryRepository::class)->clearAllCache();
+app(\Statamic\Contracts\Entries\EntryRepository::class)->clearUriCache();
+
+// Clear global variable cache
+app(\Statamic\Contracts\Globals\GlobalVariablesRepository::class)->clearCache('site');
+```
+
+### Via Artisan
+
+```bash
+# Clear all caches
+php artisan cache:clear
+
+# Clear specific tagged caches (if using Redis/Memcached)
+php artisan tinker --execute="Cache::tags(['fieldsets'])->flush();"
+php artisan tinker --execute="Cache::tags(['entries'])->flush();"
+```
 
 ## Performance Considerations
 

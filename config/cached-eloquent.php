@@ -86,5 +86,29 @@ return [
         'tagged_only' => env('CACHED_ENTRIES_TAGGED_ONLY', false),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Fieldset Caching
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for caching Eloquent-based fieldsets.
+    | Fieldsets are configuration that rarely changes, so a long cache is ideal.
+    |
+    */
+
+    'fieldsets' => [
+        /*
+        | Enable or disable fieldset caching. By default, caching is enabled.
+        | Set to false to disable caching if needed.
+        */
+        'enabled' => env('CACHED_FIELDSETS_ENABLED', true),
+
+        /*
+        | Cache duration in seconds for fieldsets. Default is 24 hours.
+        | Fieldsets are configuration data that rarely changes.
+        */
+        'cache_duration' => env('CACHED_FIELDSETS_DURATION', 86400), // 24 hours
+    ],
+
 ];
 

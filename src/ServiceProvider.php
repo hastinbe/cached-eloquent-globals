@@ -7,7 +7,7 @@ use Hastinbe\CachedEloquentGlobals\Repositories\CachedEntryRepository;
 use Hastinbe\CachedEloquentGlobals\Repositories\CachedFieldsetRepository;
 use Statamic\Contracts\Globals\GlobalVariablesRepository as GlobalVariablesRepositoryContract;
 use Statamic\Contracts\Entries\EntryRepository as EntryRepositoryContract;
-use Statamic\Fields\FieldsetRepository as FieldsetRepositoryContract;
+use Statamic\Fields\FieldsetRepository;
 use Statamic\Events\GlobalSetSaved;
 use Statamic\Events\GlobalVariablesSaved;
 use Statamic\Events\EntrySaved;
@@ -29,23 +29,23 @@ class ServiceProvider extends AddonServiceProvider
             'cached-eloquent'
         );
 
-        $this->app->booted(function () {
+        $this->app->booted(function (\Illuminate\Foundation\Application $app) {
             // Don't use Statamic::repository() it conflicts with self::bindings() of the inherited class
             Facade::clearResolvedInstance(GlobalVariablesRepositoryContract::class);
-            $this->app->singleton(
+            $app->singleton(
                 GlobalVariablesRepositoryContract::class,
                 CachedGlobalVariablesRepository::class
             );
 
             Facade::clearResolvedInstance(EntryRepositoryContract::class);
-            $this->app->singleton(
+            $app->singleton(
                 EntryRepositoryContract::class,
                 CachedEntryRepository::class
             );
 
-            Facade::clearResolvedInstance(FieldsetRepositoryContract::class);
-            $this->app->singleton(
-                FieldsetRepositoryContract::class,
+            Facade::clearResolvedInstance(FieldsetRepository::class);
+            $app->singleton(
+                FieldsetRepository::class,
                 CachedFieldsetRepository::class
             );
         });
@@ -60,6 +60,27 @@ class ServiceProvider extends AddonServiceProvider
         $this->publishes([
             __DIR__.'/../config/cached-eloquent.php' => config_path('cached-eloquent.php'),
         ], 'cached-eloquent-config');
+
+        // $this->app->booted(function () {
+        //     // Don't use Statamic::repository() it conflicts with self::bindings() of the inherited class
+        //     Facade::clearResolvedInstance(GlobalVariablesRepositoryContract::class);
+        //     $this->app->singleton(
+        //         GlobalVariablesRepositoryContract::class,
+        //         CachedGlobalVariablesRepository::class
+        //     );
+
+        //     Facade::clearResolvedInstance(EntryRepositoryContract::class);
+        //     $this->app->singleton(
+        //         EntryRepositoryContract::class,
+        //         CachedEntryRepository::class
+        //     );
+
+        //     Facade::clearResolvedInstance(FieldsetRepository::class);
+        //     $this->app->singleton(
+        //         FieldsetRepository::class,
+        //         CachedFieldsetRepository::class
+        //     );
+        // });
 
         $this->registerEventListeners();
     }

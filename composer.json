@@ -26,7 +26,7 @@
     },
     "require": {
         "statamic/cms": "^5.0",
-        "statamic/eloquent-driver": "^4.0"
+        "statamic/eloquent-driver": "^4.21"
     },
     "require-dev": {
         "orchestra/testbench": "^9.0",
